@@ -4,6 +4,7 @@ import (
 	"fmt"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/jasonlvhit/gocron"
+	"github.com/joho/godotenv"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/xcorter/cringe-bot/src/repository"
 	"github.com/xcorter/cringe-bot/src/task"
@@ -17,8 +18,13 @@ import (
 func main() {
 	fmt.Println("run!")
 
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	apiKey := os.Getenv("TELEGRAM_API_KEY")
 	client := getClient()
-	bot, err := tgbotapi.NewBotAPIWithClient("test", &client)
+	bot, err := tgbotapi.NewBotAPIWithClient(apiKey, &client)
 	checkErr(err)
 	dbPath, err := os.Getwd()
 	checkErr(err)
