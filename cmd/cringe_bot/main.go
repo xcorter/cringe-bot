@@ -44,12 +44,14 @@ func main() {
 
 func getClient() (result http.Client) {
 	//creating the proxyURL
-	proxyStr := "http://51.158.108.135:8811"
+	proxyStr := os.Getenv("USE_PROXY")
+	if proxyStr == "" {
+		return http.Client{}
+	}
 	proxyURL, err := url2.Parse(proxyStr)
 	if err != nil {
 		log.Println(err)
 	}
-
 	//adding the proxy settings to the Transport object
 	transport := &http.Transport{
 		Proxy: http.ProxyURL(proxyURL),
